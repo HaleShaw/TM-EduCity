@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.1
+// @version            1.3.2
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -45,8 +45,44 @@
 
 /* 右侧笔记、提问 */
 #mainVid > div.vid_mid > div.vid_midR > div.vid_midR_tab > div > a:nth-child(2),
-#mainVid > div.vid_mid > div.vid_midR > div.vid_midR_tab > div > a:nth-child(3) {
+#mainVid > div.vid_mid > div.vid_midR > div.vid_midR_tab > div > a:nth-child(3),
+
+/* 鼠标混入视频时的浮标按钮“新建笔记” */
+.vid_bj_new {
 	display: none !important;
+}
+
+.vid_head .vid_hright {
+  padding-top: 0 !important;
+}
+
+.vid_head {
+  height: 25px !important;
+}
+
+.vid_mid .vid_midL {
+  padding: 0 !important;
+}
+
+.vid_midR_tab,
+.vid_midR_tab > a,
+.vid_midR_tab > a > i,
+.vid_midR_tab > .vid_midR_ul,
+.vid_midR_tab > .vid_midR_ul > a,
+.vid_midR_tab > .vid_midR_ul > a > i,
+.tabhide .vid_midR{
+	width: 28px !important;
+}
+
+.tabhide .vid_mid {
+  padding-right: 28px;
+}
+.vid_mid {
+	padding-right: 439px;
+}
+
+.vid_midR {
+	width: 439px;
 }
 
 .vid_tab_content {
@@ -359,6 +395,7 @@ header {
     addRemainingTime();
     addRateButton();
     addRateListener();
+    updateSideHeight();
   }
 
 
@@ -410,6 +447,15 @@ header {
         rateEle.textContent = "1x";
       }
     };
+  }
+
+  function updateSideHeight() {
+    let sideBar = document.querySelector('.vid_midR_tab');
+    if (!sideBar) {
+      return;
+    }
+    sideBar.style.height = sideBar.parentElement.previousElementSibling.offsetHeight + 'px';
+    document.querySelector('.vid_midR_wrap').style.height = sideBar.parentElement.previousElementSibling.offsetHeight + 'px';
   }
 
   // 自动填充答案

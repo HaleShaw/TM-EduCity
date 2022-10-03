@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.3
+// @version            1.3.4
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -434,19 +434,37 @@ header {
         // X，减速
         let rate = getCurrentRate();
         let newRate = (new Number(rate) - new Number(0.1)).toFixed(1);
-        rateEle.textContent = newRate + "x";
+        let rateStr = newRate + "x";
+        rateEle.textContent = rateStr;
+        updateRate(rateStr);
       }
       if (code == 67) {
         // C，加速
         let rate = getCurrentRate();
         let newRate = (new Number(rate) + new Number(0.1)).toFixed(1);
-        rateEle.textContent = newRate + "x";
+        let rateStr = newRate + "x";
+        rateEle.textContent = rateStr;
+        updateRate(rateStr);
       }
       if (code == 90) {
         // Z，恢复正常速度
         rateEle.textContent = "1x";
+        updateRate("1x");
       }
     };
+  }
+
+  /**
+   * 更新右侧边栏上的播放倍率
+   * @param {String} rate 播放倍率
+   */
+  function updateRate(rate) {
+    let rateEle = document.querySelector('span.rateRight');
+    if (rateEle) {
+      rateEle.textContent = rate;
+    } else {
+      document.querySelector('.vid_midR_tab').appendChild($(`<span class="rateRight">${rate}</span>`)[0]);
+    }
   }
 
   /**

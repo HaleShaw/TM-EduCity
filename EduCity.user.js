@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.2
+// @version            1.3.3
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -48,16 +48,15 @@
 #mainVid > div.vid_mid > div.vid_midR > div.vid_midR_tab > div > a:nth-child(3),
 
 /* 鼠标混入视频时的浮标按钮“新建笔记” */
-.vid_bj_new {
+.vid_bj_new,
+
+/* 顶部横条 */
+.vid_head {
 	display: none !important;
 }
 
 .vid_head .vid_hright {
   padding-top: 0 !important;
-}
-
-.vid_head {
-  height: 25px !important;
 }
 
 .vid_mid .vid_midL {
@@ -396,6 +395,7 @@ header {
     addRateButton();
     addRateListener();
     updateSideHeight();
+    addPersonalCenter();
   }
 
 
@@ -449,6 +449,9 @@ header {
     };
   }
 
+  /**
+   * 更新右侧侧边栏高度
+   */
   function updateSideHeight() {
     let sideBar = document.querySelector('.vid_midR_tab');
     if (!sideBar) {
@@ -456,6 +459,13 @@ header {
     }
     sideBar.style.height = sideBar.parentElement.previousElementSibling.offsetHeight + 'px';
     document.querySelector('.vid_midR_wrap').style.height = sideBar.parentElement.previousElementSibling.offsetHeight + 'px';
+  }
+
+  /**
+   * 添加个人中心按钮
+   */
+  function addPersonalCenter() {
+    $('<a href="/ucenter2/personal/index.html" target="_blank">个人中心</a>').insertBefore($('.vid_midR_tab').children().eq(0));
   }
 
   // 自动填充答案

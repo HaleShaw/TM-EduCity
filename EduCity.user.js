@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.4
+// @version            1.3.5
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -86,6 +86,11 @@
 
 .vid_tab_content {
 	padding-bottom: 0;
+}
+
+/* 进度条上的时间 */
+.time-span {
+  margin: 0 10px;
 }
 `;
 
@@ -606,20 +611,31 @@ header {
     document.querySelector(".pv-time-current").addEventListener(
       "DOMSubtreeModified",
       function () {
-        let remainingTime = getRemainingTime();
+        let remainingSeconds = getRemainingSeconds();
+        let remainingTime = remainingSeconds > 0 ? formatSeconds(remainingSeconds) : "";
+        let realRemainingTime = formatSeconds((new Number(remainingSeconds) / new Number(getCurrentRate())).toFixed(0));
+
         let currentEle = document.querySelector('.pv-time-current');
         if (currentEle) {
           let parent = currentEle.parentElement;
-          let remainingTimeSpan;
-          if (document.querySelector('.pv-time-remaining')) {
-            remainingTimeSpan = document.querySelector('.pv-time-remaining');
-          } else {
+
+          let remainingTimeSpan = document.querySelector('.pv-time-remaining.time-span');
+          if (!remainingTimeSpan) {
             remainingTimeSpan = document.createElement("span");
-            remainingTimeSpan.setAttribute("class", "pv-time-remaining");
+            remainingTimeSpan.setAttribute("class", "pv-time-remaining time-span");
             parent.append(remainingTimeSpan);
           }
-          remainingTimeSpan.textContent = remainingTime;
+          remainingTimeSpan.textContent = '剩余时间：' + remainingTime;
+
+          let realRemainingTimeSpan = document.querySelector('.pv-time-remaining-real.time-span');
+          if (!realRemainingTimeSpan) {
+            realRemainingTimeSpan = document.createElement("span");
+            realRemainingTimeSpan.setAttribute("class", "pv-time-remaining-real time-span");
+            parent.append(realRemainingTimeSpan);
+          }
+          realRemainingTimeSpan.textContent = '真实剩余时间：' + realRemainingTime;
         }
+        document.querySelector('.pv-video-wrap').nextElementSibling.setAttribute("class", "pv-skin-blue pv-video-bottom pv-subtitle-hide pv-show-fullscreen-page pv-base-control pv-first-h pv-first-hh");
       },
       false
     );
@@ -664,15 +680,10 @@ header {
   }
 
   // 获取剩余时间
-  function getRemainingTime() {
+  function getRemainingSeconds() {
     let allSeconds = getAllSeconds();
     let nowSeconds = getNowSeconds();
-    let seconds = allSeconds - nowSeconds;
-    let remainingTime = "";
-    if (seconds >= 0) {
-      remainingTime = formatSeconds(seconds);
-    }
-    return remainingTime;
+    return allSeconds - nowSeconds;
   }
 
   // 将秒格式化为时间格式

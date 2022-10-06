@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.6
+// @version            1.3.7
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -21,6 +21,8 @@
 // @match              https://uc.educity.cn/tiku/examinationMode.html*
 // @match              https://uc.educity.cn/tiku/examinationModeCopy.html*
 // @match              https://wangxiao.xisaiwang.com/wangxiao2/*
+// @match              https://wangxiao.xisaiwang.com/tiku2/exam*
+// @match              https://wangxiao.xisaiwang.com/tiku2/ctjx*
 // @compatible	       Chrome
 // @grant              GM_addStyle
 // @grant              GM_info
@@ -33,6 +35,14 @@
 
 (function () {
   "use strict";
+
+  const mainStyle = `
+    /* Footer */
+    .ecv2_footer {
+      display: none !important;
+    }
+  `;
+
   const zhiBoStyle = `
 /* 左上角标题 */
 #mainVid > div.vid_head > div.vid_hleft > a:not(:last-child),
@@ -131,6 +141,28 @@ padding: 5px 0 !important;
   text-decoration: line-through;
 }
 `;
+
+  // 错题解析
+  const ctjxStyle = `
+  /* 顶部图片Header */
+  #accountSettingsHeader,
+
+  /* 右上角二维码 */
+  div.zt_top_right,
+
+  /* 正确答案与错误答案选项 */
+  .analysisAnswer>div.bg-fff.box-shadow.mgt10:first-child,
+
+  /* “查看答案与解析”按钮 */
+  #exeModeMsg > div.col-md-4.center.bottomCenter.bp20 > span {
+    display: none !important;
+  }
+
+  /* 选项前的CheckBox */
+  div.answerContentList> span.cbox {
+    display: inline-block !important;
+  }
+  `;
 
   const examStyle = `
 div.col-md-12 > div > div.zt_top_right,
@@ -321,6 +353,8 @@ header {
 
   function main() {
     logInfo(GM_info.script.name, GM_info.script.version);
+    GM_addStyle(mainStyle);
+
     let url = window.location.href;
     // 个人中心添加播放按钮
     if ("https://uc.educity.cn/personalCenter/studyCenter.html" == url) {
@@ -332,13 +366,17 @@ header {
     ) {
       // 直播回放调节播放速度
       updateSpeed();
-    } else if (url.startsWith("https://uc.educity.cn/tiku/testReport.html")) {
+      removeListener();
+    } else if (url.startsWith("https://uc.educity.cn/tiku/testReport.html") ||
+      url.startsWith("https://wangxiao.xisaiwang.com/tiku2/ctjx")) {
       // 测试报告中，自动填充答案
       GM_addStyle(testReportStyle);
+      GM_addStyle(ctjxStyle);
       autoFillAnswer();
     } else if (
       url.startsWith("https://uc.educity.cn/tiku/examinationModeCopy.html") ||
-      url.startsWith("https://uc.educity.cn/tiku/examinationMode.html")
+      url.startsWith("https://uc.educity.cn/tiku/examinationMode.html") ||
+      url.startsWith("https://wangxiao.xisaiwang.com/tiku2/exam")
     ) {
       // 添加键盘监听事件，按键答题
       GM_addStyle(examStyle);

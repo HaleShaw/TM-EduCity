@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.5
+// @version            1.3.6
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -613,7 +613,9 @@ header {
       function () {
         let remainingSeconds = getRemainingSeconds();
         let remainingTime = remainingSeconds > 0 ? formatSeconds(remainingSeconds) : "";
-        let realRemainingTime = formatSeconds((new Number(remainingSeconds) / new Number(getCurrentRate())).toFixed(0));
+        let realRemainingSeconds = (new Number(remainingSeconds) / new Number(getCurrentRate())).toFixed(0);
+        let realRemainingTime = formatSeconds(realRemainingSeconds);
+        let overTime = getOverTime(realRemainingSeconds);
 
         let currentEle = document.querySelector('.pv-time-current');
         if (currentEle) {
@@ -634,6 +636,14 @@ header {
             parent.append(realRemainingTimeSpan);
           }
           realRemainingTimeSpan.textContent = '真实剩余时间：' + realRemainingTime;
+
+          let overTimeSpan = document.querySelector('.pv-time-over.time-span');
+          if (!overTimeSpan) {
+            overTimeSpan = document.createElement("span");
+            overTimeSpan.setAttribute("class", "pv-time-over time-span");
+            parent.append(overTimeSpan);
+          }
+          overTimeSpan.textContent = '结束时间：' + overTime;
         }
         document.querySelector('.pv-video-wrap').nextElementSibling.setAttribute("class", "pv-skin-blue pv-video-bottom pv-subtitle-hide pv-show-fullscreen-page pv-base-control pv-first-h pv-first-hh");
       },
@@ -686,6 +696,12 @@ header {
     return allSeconds - nowSeconds;
   }
 
+  // 获取结束时间
+  function getOverTime(seconds) {
+    let timestamp = new Date().getTime() + seconds * 1000;
+    return dateFormat('HH:MM:SS', new Date(timestamp));
+  }
+
   // 将秒格式化为时间格式
   function formatSeconds(value) {
     let result = parseInt(value);
@@ -702,6 +718,34 @@ header {
     if (m !== "00") res += `${m}:`;
     res += `${s}`;
     return res;
+  }
+
+  /**
+   * Format date.
+   * @param fmt format standard.
+   * @param date date.
+   * @returns {Time formatted string}
+   */
+  function dateFormat(fmt, date) {
+    let ret;
+    let opt = {
+      'Y+': date.getFullYear().toString(),
+      'm+': (date.getMonth() + 1).toString(),
+      'd+': date.getDate().toString(),
+      'H+': date.getHours().toString(),
+      'M+': date.getMinutes().toString(),
+      'S+': date.getSeconds().toString()
+    };
+    for (let k in opt) {
+      ret = new RegExp('(' + k + ')').exec(fmt);
+      if (ret) {
+        fmt = fmt.replace(
+          ret[1],
+          ret[1].length == 1 ? opt[k] : opt[k].padStart(ret[1].length, '0')
+        );
+      }
+    }
+    return fmt;
   }
 
   /**

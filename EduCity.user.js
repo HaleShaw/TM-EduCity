@@ -37,6 +37,10 @@
   "use strict";
 
   const mainStyle = `
+    /* 顶部菜单 */
+    div.ecv2_header_tools > div.fl > ul > li:not(:first-child),
+    div.ecv2_header_tools > div.fr > :not(:last-child),
+
     /* Footer */
     .ecv2_footer {
       display: none !important;
@@ -164,21 +168,15 @@ padding: 5px 0 !important;
   }
   `;
 
+  // 考试或练习页面
   const examStyle = `
 div.col-md-12 > div > div.zt_top_right,
-div.doPane.note,
-div.doPane.question,
-div.shitiDesp.pdt15 > div.jiexinew:nth-child(3),
-div.answerTitle,
-#ztsetWrap > div.bg-fff.box-shadow,
-#scantronWrap > div > div.dtklist > div.cbnWrap > h5,
-#scantronWrap > div > div.spanExplain{
+.lh2 > span,
+#accountSettingsHeader,
+.center.answerCard,
+.pull-right > span:not(:first-child),
+.answerTitle {
 	display: none !important;
-}
-
-.right-title {
-	padding: 0 20px !important;
-	margin-bottom: 0px !important;
 }
 
 .zt_top_zong {
@@ -186,69 +184,18 @@ div.answerTitle,
 	background: none !important;
 }
 
-div.col-md-9 > div.bg-fff.box-shadow.mgt10.subject-content {
-	background: none !important;
-}
-
 .bp20 {
 	padding: 6px !important;
 }
 
-#ztsetWrap {
-	margin-top: -96px !important;
-}
-
-.dtklist>.cbnWrap {
-    max-height: 837px !important;
-    padding: 5px 20px 0px 20px !important;
-}
-
-.col-md-3 {
-    width: 19% !important;
-}
-
-.pdb20 {
-    padding-bottom: 0px !important;
-}
-
-.subjectBody {
-    padding-bottom: 0px !important;
-}
-
 .ISpan {
-    margin-bottom: 2px !important;
-    margin-right: 0 !important;
+	margin-bottom: 2px !important;
+	margin-right: 0 !important;
 }
 
-.pdt15 {
-	padding-top: 0px !important;
-}
-
-.answerEnd {
-	padding: 0 10px !important;
-	margin-top: 0px !important;
-}
 .subject-content {
 	padding: 0px 30px !important;
 	background: none !important;
-}
-.answerWrap {
-	padding: 0px 30px !important;
-}
-
-.jiexinew {
-	padding: 5px 30px !important;
-}
-
-div.analysisAnswer > div.bg-fff.box-shadow.mgt10:nth-child(2) {
-	padding-bottom: 0 !important;
-}
-
-.mgb20 {
-	margin-bottom: 0px !important;
-}
-.answerList {
-	padding: 0 15px !important;
 }
 
 .lh2 {
@@ -258,74 +205,20 @@ div.analysisAnswer > div.bg-fff.box-shadow.mgt10:nth-child(2) {
 .countTime {
 	padding: 0 !important;
 }
+
 #ztsetWrap > div.bg-fff.box-shadow {
 	margin-bottom: 0 !important;
 }
 
+/* 顶部标题高度 */
 .mgt10 {
 	margin-top: 0px !important;
-}
-
-.swal-footer {
-	text-align: center !important;
 }
 
 .lh2 {
 	font-weight: bolder !important;
 	color: #337ab7 !important;
 	font-size: 1.125em !important;
-}
-
-.lh2 > span {
-	display: none !important;
-}
-.shitiText.lh2 {
-	font-weight: normal !important;
-	color: #333 !important;
-	font-size: 14px !important;
-}
-
-#accountSettingsHeader,
-.center.answerCard,
-.doPane,
-.pull-right > span:not(:first-child),
-.answerTitle {
-	display: none !important;
-}
-
-#paperTitleWrap {
-	display: none !important;
-}
-
-.center {
-	margin-top: 0px !important;
-	margin-bottom: 0px !important;
-}
-
-.modeTitle {
-	padding-bottom: 0px !important;
-}
-
-.right-title {
-	padding: 0 0 !important;
-	margin-bottom: 0px !important;
-}
-
-.mgt {
-	margin-top: 0px !important;
-}
-
-.subject-content {
-	background: none !important;
-}
-
-header {
-	height: 0px;
-}
-
-#navigation {
-	height: 0px !important;
-	line-height: 2rem !important;
 }
 
 .spanExplain {

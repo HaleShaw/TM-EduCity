@@ -175,7 +175,11 @@ div.col-md-12 > div > div.zt_top_right,
 #accountSettingsHeader,
 .center.answerCard,
 .pull-right > span:not(:first-child),
-.answerTitle {
+.answerTitle,
+
+/* 答案解析中的“笔记”和“提问” */
+div.tknew.doPane.note,
+div.tknew.doPane.question {
 	display: none !important;
 }
 

@@ -529,9 +529,22 @@ div.col-md-12 > div > div.zt_top_right,
           }
         }, 300);
       }
+      // J. 取消标记
+      if (code == 74 && document.getElementsByClassName("bj_icon cancelBiaoji")[0]) {
+        document.getElementsByClassName("bj_icon cancelBiaoji")[0].click();
+        setTimeout(function () {
+          if (document.getElementsByClassName("swal-button swal-button--confirm")[0]) {
+            document.getElementsByClassName("swal-button swal-button--confirm")[0].click();
+          }
+        }, 300);
+      }
       // P.暂停
       if (code == 80 && document.getElementsByClassName("inline-block zanTing")[0]) {
         document.getElementsByClassName("inline-block zanTing")[0].click();
+      }
+      // P.继续做题
+      if (code == 80 && document.getElementsByClassName("swal-button swal-button--confirm")[0] && document.getElementsByClassName("swal-button swal-button--confirm")[0].textContent == '继续做题') {
+        document.getElementsByClassName("swal-button swal-button--confirm")[0].click();
       }
     };
   }

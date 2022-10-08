@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.7
+// @version            1.3.8
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -20,6 +20,7 @@
 // @match              https://uc.educity.cn/tiku/testReport.html*
 // @match              https://uc.educity.cn/tiku/examinationMode.html*
 // @match              https://uc.educity.cn/tiku/examinationModeCopy.html*
+// @match              https://wangxiao.xisaiwang.com/*
 // @match              https://wangxiao.xisaiwang.com/wangxiao2/*
 // @match              https://wangxiao.xisaiwang.com/tiku2/exam*
 // @match              https://wangxiao.xisaiwang.com/tiku2/ctjx*
@@ -108,44 +109,6 @@
 }
 `;
 
-  const testReportStyle = `
-.side.rightfixside,
-.cbox,
-.review,
-.doPane.note,
-.doPane.question,
-.notes,
-.advise,
-.answerTitle,
-.six.clearfix>span,
-.pull-right.clearfix,
-li.one, li.two, li.four, li.five,
-.tsbody,
-footer {
-display: none !important;
-}
-
-.wrong,
-.wrong + .clearfix.dajx,
-.analysisAnswer.none,
-li.one.bt{
-display: block !important;
-}
-
-.tsbody {
-padding: 5px 0 !important;
-}
-
-.answerEnd>span {
-  color: #51cb65;
-}
-
-.answerEnd>div {
-  color: #a3a3af;
-  text-decoration: line-through;
-}
-`;
-
   // 错题解析
   const ctjxStyle = `
   /* 顶部图片Header */
@@ -158,13 +121,52 @@ padding: 5px 0 !important;
   .analysisAnswer>div.bg-fff.box-shadow.mgt10:first-child,
 
   /* “查看答案与解析”按钮 */
-  #exeModeMsg > div.col-md-4.center.bottomCenter.bp20 > span {
+  #exeModeMsg > div.col-md-4.center.bottomCenter.bp20 > span,
+
+  /* 答案解析中的“笔记”和“提问” */
+  div.tknew.doPane.note,
+  div.tknew.doPane.question {
     display: none !important;
   }
 
   /* 选项前的CheckBox */
   div.answerContentList> span.cbox {
     display: inline-block !important;
+  }
+
+  /* 标题 */
+  .zt_top_zong {-
+      height: 50px;
+      background: none !important;
+  }
+
+  .right-title {
+      padding: 0px 20px !important;
+      margin-bottom: 0px !important;
+  }
+
+  /* 进度条 */
+  .jindu_div {
+      margin: 5px 0 !important;
+  }
+
+  .bp20 {
+      padding: 5px !important;
+  }
+
+  div.answerList.mgb20 {
+    padding: 0 15px 0 25px !important;
+    margin-bottom: 0px !important;
+  }
+
+  /* 题干 */
+  .subject-content {
+      padding: 5px 30px !important;
+  }
+
+  /* 参考解析 */
+  div.analysisAnswer > div {
+    padding-bottom: 0px !important;
   }
   `;
 
@@ -267,9 +269,8 @@ div.tknew.doPane.question {
     } else if (url.startsWith("https://uc.educity.cn/tiku/testReport.html") ||
       url.startsWith("https://wangxiao.xisaiwang.com/tiku2/ctjx")) {
       // 测试报告中，自动填充答案
-      GM_addStyle(testReportStyle);
       GM_addStyle(ctjxStyle);
-      autoFillAnswer();
+      addLeftRightKeyListener();
     } else if (
       url.startsWith("https://uc.educity.cn/tiku/examinationModeCopy.html") ||
       url.startsWith("https://uc.educity.cn/tiku/examinationMode.html") ||
@@ -426,69 +427,6 @@ div.tknew.doPane.question {
     $('<a href="/ucenter2/personal/index.html" target="_blank">个人中心</a>').insertBefore($('.vid_midR_tab').children().eq(0));
   }
 
-  // 自动填充答案
-  function autoFillAnswer() {
-    setTimeout(function show() {
-      var aa = document.getElementsByClassName("chak zhank");
-      var bb = document.getElementsByClassName("ckjx");
-      const answers = document.getElementsByClassName("answerEnd");
-      for (let i = 0; i < answers.length; i++) {
-        var ans = answers[i].children[0].innerText.replace("参考答案：", "").replace(/\s+/g, "");
-        var your = answers[i].children[1].innerText.replace("你的答案：", "").replace(/\s+/g, "");
-        if (ans != your) {
-          aa[i].click();
-          bb[i].click();
-          var ansId;
-          let yourId;
-          switch (ans) {
-            case "A":
-              ansId = 0;
-              break;
-            case "B":
-              ansId = 1;
-              break;
-            case "C":
-              ansId = 2;
-              break;
-            case "D":
-              ansId = 3;
-              break;
-            default:
-              console.warn("error");
-              break;
-          }
-          switch (your) {
-            case "A":
-              yourId = 0;
-              break;
-            case "B":
-              yourId = 1;
-              break;
-            case "C":
-              yourId = 2;
-              break;
-            case "D":
-              yourId = 3;
-              break;
-            default:
-              console.warn("Error: There's no your answer.");
-              break;
-          }
-          var ansList =
-            answers[i].parentElement.previousElementSibling.previousElementSibling.children[0]
-              .children[1].children;
-          ansList[ansId].style.fontWeight = "bold";
-          ansList[ansId].style.color = "#51cb65";
-          ansList[ansId].children[1].style.fontWeight = "bold";
-          // ansList[ansId].children[0].children[0].checked = true;
-          if (yourId != undefined) {
-            ansList[yourId].style.color = "rgba(128, 128, 145,0.7)";
-            ansList[yourId].style.textDecoration = "line-through";
-          }
-        }
-      }
-    }, 6000);
-  }
 
   // 添加键盘监听事件，按键答题
   function addKeyListener() {
@@ -496,15 +434,15 @@ div.tknew.doPane.question {
       var theEvent = e || window.event;
       var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
       // 	Spacebar. 查看答案解析
-      if (code == 32) {
+      if (code == 32 && document.getElementsByClassName("col-md-4 center bottomCenter bp20")[0]) {
         document.getElementsByClassName("col-md-4 center bottomCenter bp20")[0].click();
       }
       // Left Arrow.
-      if (code == 37) {
+      if (code == 37 && document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0]) {
         document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0].click();
       }
       // Right Arrow.
-      if (code == 39) {
+      if (code == 39 && document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0]) {
         document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
       }
       // A,1.
@@ -549,6 +487,22 @@ div.tknew.doPane.question {
       // P.继续做题
       if (code == 80 && document.getElementsByClassName("swal-button swal-button--confirm")[0] && document.getElementsByClassName("swal-button swal-button--confirm")[0].textContent == '继续做题') {
         document.getElementsByClassName("swal-button swal-button--confirm")[0].click();
+      }
+    };
+  }
+
+  // 添加左右方向键监听事件
+  function addLeftRightKeyListener() {
+    document.onkeyup = function (e) {
+      var theEvent = e || window.event;
+      var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+      // Left Arrow.
+      if (code == 37 && document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0]) {
+        document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0].click();
+      }
+      // Right Arrow.
+      if (code == 39 && document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0]) {
+        document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
       }
     };
   }

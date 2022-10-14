@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.8
+// @version            1.3.9
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -13,7 +13,7 @@
 // @downloadURL        https://github.com/HaleShaw/TM-EduCity/raw/main/EduCity.user.js
 // @updateURL          https://github.com/HaleShaw/TM-EduCity/raw/main/EduCity.user.js
 // @contributionURL    https://www.jianwudao.com/
-// @icon               https://www.educity.cn/favicon.ico
+// @icon               https://wangxiao.xisaiwang.com/favicon.ico
 // @match              https://www.educity.cn/wangxiao2/*
 // @match              http://www.educity.cn/wangxiao2/*
 // @match              https://uc.educity.cn/personalCenter/studyCenter.html
@@ -21,9 +21,6 @@
 // @match              https://uc.educity.cn/tiku/examinationMode.html*
 // @match              https://uc.educity.cn/tiku/examinationModeCopy.html*
 // @match              https://wangxiao.xisaiwang.com/*
-// @match              https://wangxiao.xisaiwang.com/wangxiao2/*
-// @match              https://wangxiao.xisaiwang.com/tiku2/exam*
-// @match              https://wangxiao.xisaiwang.com/tiku2/ctjx*
 // @compatible	       Chrome
 // @grant              GM_addStyle
 // @grant              GM_info
@@ -170,6 +167,28 @@
   }
   `;
 
+  // 测试报告页面样式
+  const reportStyle = `
+  /* 顶部广告 */
+  #accountSettingsHeader,
+
+  /* 专家建议 */
+  div.col-md-7.testportSty > p,
+  div.col-md-7.testportSty > a,
+
+  /* 笔记、提问 */
+  div.doPane.note,
+  div.doPane.question,
+
+  /* 参考答案，你的答案 */
+  .answerEnd,
+
+  /* 选项前的radio */
+  .answerContentList.mgt10 > .cbox {
+    display: none !important;
+  }
+  `;
+
   // 考试或练习页面
   const examStyle = `
 div.col-md-12 > div > div.zt_top_right,
@@ -248,6 +267,8 @@ div.tknew.doPane.question {
 }
 `;
 
+  const ANSWER_LIST = ['A', 'B', 'C', 'D'];
+
   setTimeout(() => { main(); }, 1500);
 
   function main() {
@@ -266,12 +287,16 @@ div.tknew.doPane.question {
       // 直播回放调节播放速度
       updateSpeed();
       removeListener();
-    } else if (url.startsWith("https://uc.educity.cn/tiku/testReport.html") ||
-      url.startsWith("https://wangxiao.xisaiwang.com/tiku2/ctjx")) {
-      // 测试报告中，自动填充答案
+    } else if (url.startsWith("https://wangxiao.xisaiwang.com/tiku2/ctjx")) {
+      // 独立的错题解析页面，添加键盘事件
       GM_addStyle(ctjxStyle);
       addLeftRightKeyListener();
-    } else if (
+    } else if (url.startsWith('https://wangxiao.xisaiwang.com/tiku2/sectionReport')) {
+      // 测试报告页面
+      GM_addStyle(reportStyle);
+      showWrongTopics();
+    }
+    else if (
       url.startsWith("https://uc.educity.cn/tiku/examinationModeCopy.html") ||
       url.startsWith("https://uc.educity.cn/tiku/examinationMode.html") ||
       url.startsWith("https://wangxiao.xisaiwang.com/tiku2/exam")
@@ -505,6 +530,46 @@ div.tknew.doPane.question {
         document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
       }
     };
+  }
+
+  // 只看错题
+  function showWrongTopics() {
+    loadErrData();
+    setTimeout(() => {
+      let showButtons = document.querySelectorAll('#dataListWarp>ul>li>h4.chak.zhank');
+      for (let i = 0; i < showButtons.length; i++) {
+        showButtons[i].click();
+      }
+    }, 800);
+    setTimeout(() => {
+      let explainButtons = document.querySelectorAll('#dataListWarp>div.dajx>div.pull-right.clearfix>a.ckjx');
+      for (let i = 0; i < explainButtons.length; i++) {
+        explainButtons[i].click();
+      }
+    }, 1500);
+    setTimeout(() => { autoFillAnswer(); }, 2000);
+  };
+
+  // 自动填充答案
+  function autoFillAnswer() {
+    const answers = document.getElementsByClassName("answerEnd");
+    for (let i = 0; i < answers.length; i++) {
+      let ans = answers[i].children[0].innerText.replace("参考答案：", "").replace(/\s+/g, "");
+      let your = answers[i].children[1].innerText.replace("你的答案：", "").replace(/\s+/g, "");
+      if (ans != your) {
+        let ansId = ANSWER_LIST.indexOf(ans);
+        let yourId = ANSWER_LIST.indexOf(your);
+        let ansList = answers[i].parentElement.parentElement.querySelectorAll('.answerContentList.mgt10');
+        ansList[ansId].style.fontWeight = "bold";
+        ansList[ansId].style.color = "#51cb65";
+        ansList[ansId].children[1].style.fontWeight = "bold";
+        // ansList[ansId].children[0].children[0].checked = true;
+        if (yourId != undefined) {
+          ansList[yourId].style.color = "rgba(128, 128, 145,0.7)";
+          ansList[yourId].style.textDecoration = "line-through";
+        }
+      }
+    }
   }
 
   // ---------------------------------------------------

@@ -184,7 +184,10 @@
   .answerEnd,
 
   /* 选项前的radio */
-  .answerContentList.mgt10 > .cbox {
+  .answerContentList.mgt10 > .cbox,
+
+  /* 查看解析，收藏*/
+  #dataListWarp > div.dajx > div.pull-right.clearfix {
     display: none !important;
   }
   `;

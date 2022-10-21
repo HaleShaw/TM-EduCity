@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.3.9
+// @version            1.4.0
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -270,6 +270,53 @@ div.tknew.doPane.question {
 }
 `;
 
+  // 个人中心页面
+  const personalStyle = `
+  /* 班主任微信 */
+  #baomingDiv > .kcgw_weixin,
+
+  /* 用户ID，我的报名 */
+  div.xpc_top_info > div.xpc_top_V2,
+
+  /* 左侧边栏菜单栏 */
+  div.xpc-menu-box > dl:last-child,
+  div.xpc-menu-box > dl:nth-last-child(2):nth-child(odd),
+  div.xpc-menu-box > dl:nth-child(2) > dd:last-child,
+
+  /* 右侧悬浮工具 */
+  .ecv2_right_tools {
+    display: none !important;
+  }
+
+  #cHeadImg {
+    height: 48px;
+    width: 48px;
+  }
+
+  .xpc_top,
+  .xpc_top .xpc_top_con,
+  .xpc_top .xpc-top-message li a {
+    height: 60px !important;
+  }
+
+  /* 播放列表 */
+  .ecv2_live_taggleTitles {
+    padding: 5px 20px 5px 20px !important;
+  }
+  .ecv2_live_taggleHide li {
+    padding: 5px 0 5px 68px !important;
+  }
+
+  .xpc_zbmulu {
+    padding: 0 20px !important;
+  }
+
+  /* 主窗口 */
+  .xpc_main .xpc_main_con {
+    padding: 0 !important;
+  }
+  `;
+
   const ANSWER_LIST = ['A', 'B', 'C', 'D'];
 
   setTimeout(() => { main(); }, 1500);
@@ -279,9 +326,10 @@ div.tknew.doPane.question {
     GM_addStyle(mainStyle);
 
     let url = window.location.href;
-    // 个人中心添加播放按钮
-    if ("https://uc.educity.cn/personalCenter/studyCenter.html" == url) {
-      updatePlayTitle();
+    // 个人中心页面
+    if (url.startsWith('https://wangxiao.xisaiwang.com/ucenter2/')) {
+      GM_addStyle(personalStyle);
+      updatePlayButton();
     } else if (
       url.startsWith("https://www.educity.cn/wangxiao2") ||
       url.startsWith("http://www.educity.cn/wangxiao2") ||
@@ -310,50 +358,17 @@ div.tknew.doPane.question {
     }
   }
 
-  // 个人中心，学习列表添加播放按钮，修改标题描述
-  function updatePlayTitle() {
-    setTimeout(function () {
-      document.getElementById("loadStuWrap").lastElementChild.click();
-      setTimeout(function () {
-        addPlayBotton();
-        adjustDes();
-      }, 1000);
-    }, 1500);
-  }
-
-  // 个人中心，学习列表添加播放按钮
-  function addPlayBotton() {
-    const urlPrefix = "https://www.educity.cn/courseCenter/zhibo.html?gsver=2&id=";
-    if (document.getElementsByClassName("enterStudy")) {
-      let spans = document.getElementsByClassName("enterStudy");
-      console.log(spans.length);
-      for (let i = 0; i < spans.length; i++) {
-        let dataId = spans[i].getAttribute("data-id");
-        let url = urlPrefix + dataId;
-        let aEle = document.createElement("a");
-        aEle.setAttribute("href", url);
-        aEle.setAttribute("target", "_blank");
-        aEle.innerHTML = '<i class="icon_index_login_me inline-block icon-st"> </i>';
-        spans[i].parentElement.append(aEle);
-        spans[i].style.display = "none";
-      }
-    }
-  }
-
-  // 将描述移动到标题上
-  function adjustDes() {
-    let titleDivs = document.querySelectorAll("div.cMenuTitle.clearfix");
-    for (let i = 0; i < titleDivs.length; i++) {
-      let content = "";
-      let aEle = titleDivs[i].nextElementSibling.querySelector("h4.panel-title>a");
-      if (aEle) {
-        content = aEle.innerText;
-      }
-      let childEle = document.createElement("div");
-      childEle.setAttribute("class", "pull-left");
-      childEle.innerHTML = "<span>" + content + "</span>";
-      titleDivs[i].append(childEle);
-      titleDivs[i].nextElementSibling.style.display = "none";
+  /**
+   * 更新播放按钮事件
+   * 将原有事件移除，在新页面打开播放页面。
+   */
+  function updatePlayButton() {
+    let buttons = document.querySelectorAll('div.detail-course-top > a.detail-course-btnC.buyProductDetail[data-type="Video"]');
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].removeAttribute('onclick');
+      buttons[i].setAttribute('target', '_blank');
+      const uri = "/wangxiao2/c" + $(buttons[i]).attr("data-cid") + "/sp" + $(buttons[i]).attr("data-id") + '.html';
+      buttons[i].setAttribute('href', uri);
     }
   }
 

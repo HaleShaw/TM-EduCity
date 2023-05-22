@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.0
+// @version            1.4.1
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -106,67 +106,6 @@
 }
 `;
 
-  // 错题解析
-  const ctjxStyle = `
-  /* 顶部图片Header */
-  #accountSettingsHeader,
-
-  /* 右上角二维码 */
-  div.zt_top_right,
-
-  /* 正确答案与错误答案选项 */
-  .analysisAnswer>div.bg-fff.box-shadow.mgt10:first-child,
-
-  /* “查看答案与解析”按钮 */
-  #exeModeMsg > div.col-md-4.center.bottomCenter.bp20 > span,
-
-  /* 答案解析中的“笔记”和“提问” */
-  div.tknew.doPane.note,
-  div.tknew.doPane.question {
-    display: none !important;
-  }
-
-  /* 选项前的CheckBox */
-  div.answerContentList> span.cbox {
-    display: inline-block !important;
-  }
-
-  /* 标题 */
-  .zt_top_zong {-
-      height: 50px;
-      background: none !important;
-  }
-
-  .right-title {
-      padding: 0px 20px !important;
-      margin-bottom: 0px !important;
-  }
-
-  /* 进度条 */
-  .jindu_div {
-      margin: 5px 0 !important;
-  }
-
-  .bp20 {
-      padding: 5px !important;
-  }
-
-  div.answerList.mgb20 {
-    padding: 0 15px 0 25px !important;
-    margin-bottom: 0px !important;
-  }
-
-  /* 题干 */
-  .subject-content {
-      padding: 5px 30px !important;
-  }
-
-  /* 参考解析 */
-  div.analysisAnswer > div {
-    padding-bottom: 0px !important;
-  }
-  `;
-
   // 测试报告页面样式
   const reportStyle = `
   /* 顶部广告 */
@@ -194,79 +133,151 @@
 
   // 考试或练习页面
   const examStyle = `
-div.col-md-12 > div > div.zt_top_right,
-.lh2 > span,
+/* 顶部图片Header */
 #accountSettingsHeader,
-.center.answerCard,
-.pull-right > span:not(:first-child),
-.answerTitle,
+
+/* 右上角二维码 */
+div.zt_top_right,
+
+/* 正确答案与错误答案选项 */
+.analysisAnswer>div.bg-fff.box-shadow.mgt10:first-child,
 
 /* 答案解析中的“笔记”和“提问” */
 div.tknew.doPane.note,
-div.tknew.doPane.question {
-	display: none !important;
+div.tknew.doPane.question,
+
+div.col-md-12>div>div.zt_top_right,
+.lh2>span,
+#accountSettingsHeader,
+.center.answerCard,
+.pull-right>span:not(:first-child),
+.answerTitle {
+  display: none !important;
 }
 
+/* 选项前的CheckBox */
+div.answerContentList>span.cbox {
+  display: inline-block !important;
+}
+
+/* 标题 */
 .zt_top_zong {
-	height: 65px !important;
-	background: none !important;
+  height: 50px;
+  background: none !important;
+}
+
+.right-title {
+  padding: 0px 20px !important;
+  margin-bottom: 0px !important;
+}
+
+/* 进度条 */
+.jindu_div {
+  margin: 5px 0 !important;
 }
 
 .bp20 {
-	padding: 6px !important;
+  padding: 5px !important;
 }
 
 .ISpan {
-	margin-bottom: 2px !important;
-	margin-right: 0 !important;
+  margin-bottom: 2px !important;
+  margin-right: 0 !important;
 }
 
+div.answerList.mgb20 {
+  padding: 0 15px 0 25px !important;
+  margin-bottom: 0px !important;
+}
+
+/* 题干 */
 .subject-content {
-	padding: 0px 30px !important;
-	background: none !important;
+  padding: 0px 30px !important;
+  background: none !important;
+  min-height: 320px !important;
+}
+
+.single-content {
+  padding: 5px 10px !important;
 }
 
 .lh2 {
-	margin-bottom: 5px !important;
+  margin-bottom: 5px !important;
+}
+
+.examTigan > p {
+  font-size: 2.3rem;
+}
+
+/* 选项列表 */
+.answerContentList > label {
+  font-size: 2.2rem;
+  color: #666;
+}
+
+/* 参考解析 */
+div.analysisAnswer>div {
+  padding-bottom: 0px !important;
+}
+
+.answerEnd {
+  padding: 0 !important;
+  margin-top: 0 !important;
+}
+
+.answerList {
+  padding: 0 15px 5px 25px !important;
+}
+
+.shitiDesp.pdt15 {
+  padding-top: 0 !important;
+}
+
+.jiexinew {
+  padding: 10px 30px 0 30px !important;
+}
+
+#jiexispan>p {
+  margin-bottom: 0 !important;
 }
 
 .countTime {
-	padding: 0 !important;
+  padding: 0 !important;
 }
 
-#ztsetWrap > div.bg-fff.box-shadow {
-	margin-bottom: 0 !important;
+#ztsetWrap>div.bg-fff.box-shadow {
+  margin-bottom: 0 !important;
 }
 
 /* 顶部标题高度 */
 .mgt10 {
-	margin-top: 0px !important;
+  margin-top: 0px !important;
 }
 
 .lh2 {
-	font-weight: bolder !important;
-	color: #337ab7 !important;
-	font-size: 1.125em !important;
+  font-weight: bolder !important;
+  color: #337ab7 !important;
+  font-size: 1.125em !important;
 }
 
 .spanExplain {
-	padding: 5px 20px !important;
+  padding: 5px 20px !important;
 }
 
 .exBtn {
-	margin-top: 5px !important;
+  margin-top: 5px !important;
 }
 
 .answerWrap {
-	padding: 0px 30px !important;
+  padding: 0px 30px !important;
 }
 
 .mgb20 {
-	margin-bottom: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 .singleR {
-    font-size: 16px;
+  font-size: 16px;
 }
 `;
 
@@ -317,9 +328,9 @@ div.tknew.doPane.question {
   }
   `;
 
-  const ANSWER_LIST = ['A', 'B', 'C', 'D'];
+  const ANSWER_LIST = ["A", "B", "C", "D"];
 
-  setTimeout(() => { main(); }, 1500);
+  main();
 
   function main() {
     logInfo(GM_info.script.name, GM_info.script.version);
@@ -327,27 +338,29 @@ div.tknew.doPane.question {
 
     let url = window.location.href;
     // 个人中心页面
-    if (url.startsWith('https://wangxiao.xisaiwang.com/ucenter2/')) {
+    if (url.startsWith("https://wangxiao.xisaiwang.com/ucenter2/")) {
       GM_addStyle(personalStyle);
-      updatePlayButton();
+      setTimeout(() => {
+        updatePlayButton();
+      }, 1500);
     } else if (
       url.startsWith("https://www.educity.cn/wangxiao2") ||
       url.startsWith("http://www.educity.cn/wangxiao2") ||
-      url.startsWith('https://wangxiao.xisaiwang.com/wangxiao2/')
+      url.startsWith("https://wangxiao.xisaiwang.com/wangxiao2/")
     ) {
       // 直播回放调节播放速度
-      updateSpeed();
-      removeListener();
+      setTimeout(() => {
+        updateSpeed();
+      }, 1500);
     } else if (url.startsWith("https://wangxiao.xisaiwang.com/tiku2/ctjx")) {
       // 独立的错题解析页面，添加键盘事件
-      GM_addStyle(ctjxStyle);
+      GM_addStyle(examStyle);
       addLeftRightKeyListener();
-    } else if (url.startsWith('https://wangxiao.xisaiwang.com/tiku2/sectionReport')) {
+    } else if (url.startsWith("https://wangxiao.xisaiwang.com/tiku2/sectionReport")) {
       // 测试报告页面
       GM_addStyle(reportStyle);
       showWrongTopics();
-    }
-    else if (
+    } else if (
       url.startsWith("https://uc.educity.cn/tiku/examinationModeCopy.html") ||
       url.startsWith("https://uc.educity.cn/tiku/examinationMode.html") ||
       url.startsWith("https://wangxiao.xisaiwang.com/tiku2/exam")
@@ -363,12 +376,19 @@ div.tknew.doPane.question {
    * 将原有事件移除，在新页面打开播放页面。
    */
   function updatePlayButton() {
-    let buttons = document.querySelectorAll('div.detail-course-top > a.detail-course-btnC.buyProductDetail[data-type="Video"]');
+    let buttons = document.querySelectorAll(
+      'div.detail-course-top > a.detail-course-btnC.buyProductDetail[data-type="Video"]'
+    );
     for (let i = 0; i < buttons.length; i++) {
-      buttons[i].removeAttribute('onclick');
-      buttons[i].setAttribute('target', '_blank');
-      const uri = "/wangxiao2/c" + $(buttons[i]).attr("data-cid") + "/sp" + $(buttons[i]).attr("data-id") + '.html';
-      buttons[i].setAttribute('href', uri);
+      buttons[i].removeAttribute("onclick");
+      buttons[i].setAttribute("target", "_blank");
+      const uri =
+        "/wangxiao2/c" +
+        $(buttons[i]).attr("data-cid") +
+        "/sp" +
+        $(buttons[i]).attr("data-id") +
+        ".html";
+      buttons[i].setAttribute("href", uri);
     }
   }
 
@@ -382,21 +402,22 @@ div.tknew.doPane.question {
     addPersonalCenter();
   }
 
-
   /**
    * 添加倍速按钮
    */
   function addRateButton() {
-    if (!$('.pv-rate-select') || $('.pv-rate-select').length == 0) {
+    if (!$(".pv-rate-select") || $(".pv-rate-select").length == 0) {
       return;
     }
-    $('<div data-rate="4">4x</div><div data-rate="3.5">3.5x</div><div data-rate="3">3x</div><div data-rate="2.5">2.5x</div>').insertBefore($('.pv-rate-select').children().eq(0));
+    $(
+      '<div data-rate="4">4x</div><div data-rate="3.5">3.5x</div><div data-rate="3">3x</div><div data-rate="2.5">2.5x</div>'
+    ).insertBefore($(".pv-rate-select").children().eq(0));
   }
 
   // 获取当前倍速
   function getCurrentRate() {
     let rate = 1.0;
-    let rateEle = document.querySelector('button.pv-rate-btn>span');
+    let rateEle = document.querySelector("button.pv-rate-btn>span");
     if (!rateEle) {
       return rate;
     }
@@ -409,7 +430,7 @@ div.tknew.doPane.question {
    * 添加控制播放速度的监听事件，仅用于更新显示当前速度，速度控制通过其他通用三方脚本实现。
    */
   function addRateListener() {
-    let rateEle = document.querySelector('button.pv-rate-btn>span');
+    let rateEle = document.querySelector("button.pv-rate-btn>span");
 
     document.onkeyup = function (e) {
       var theEvent = e || window.event;
@@ -443,11 +464,13 @@ div.tknew.doPane.question {
    * @param {String} rate 播放倍率
    */
   function updateRate(rate) {
-    let rateEle = document.querySelector('span.rateRight');
+    let rateEle = document.querySelector("span.rateRight");
     if (rateEle) {
       rateEle.textContent = rate;
     } else {
-      document.querySelector('.vid_midR_tab').appendChild($(`<span class="rateRight">${rate}</span>`)[0]);
+      document
+        .querySelector(".vid_midR_tab")
+        .appendChild($(`<span class="rateRight">${rate}</span>`)[0]);
     }
   }
 
@@ -455,21 +478,23 @@ div.tknew.doPane.question {
    * 更新右侧侧边栏高度
    */
   function updateSideHeight() {
-    let sideBar = document.querySelector('.vid_midR_tab');
+    let sideBar = document.querySelector(".vid_midR_tab");
     if (!sideBar) {
       return;
     }
-    sideBar.style.height = sideBar.parentElement.previousElementSibling.offsetHeight + 'px';
-    document.querySelector('.vid_midR_wrap').style.height = sideBar.parentElement.previousElementSibling.offsetHeight + 'px';
+    sideBar.style.height = sideBar.parentElement.previousElementSibling.offsetHeight + "px";
+    document.querySelector(".vid_midR_wrap").style.height =
+      sideBar.parentElement.previousElementSibling.offsetHeight + "px";
   }
 
   /**
    * 添加个人中心按钮
    */
   function addPersonalCenter() {
-    $('<a href="/ucenter2/personal/index.html" target="_blank">个人中心</a>').insertBefore($('.vid_midR_tab').children().eq(0));
+    $('<a href="/ucenter2/personal/index.html" target="_blank">个人中心</a>').insertBefore(
+      $(".vid_midR_tab").children().eq(0)
+    );
   }
-
 
   // 添加键盘监听事件，按键答题
   function addKeyListener() {
@@ -528,7 +553,12 @@ div.tknew.doPane.question {
         document.getElementsByClassName("inline-block zanTing")[0].click();
       }
       // P.继续做题
-      if (code == 80 && document.getElementsByClassName("swal-button swal-button--confirm")[0] && document.getElementsByClassName("swal-button swal-button--confirm")[0].textContent == '继续做题') {
+      if (
+        code == 80 &&
+        document.getElementsByClassName("swal-button swal-button--confirm")[0] &&
+        document.getElementsByClassName("swal-button swal-button--confirm")[0].textContent ==
+          "继续做题"
+      ) {
         document.getElementsByClassName("swal-button swal-button--confirm")[0].click();
       }
     };
@@ -554,19 +584,23 @@ div.tknew.doPane.question {
   function showWrongTopics() {
     loadErrData();
     setTimeout(() => {
-      let showButtons = document.querySelectorAll('#dataListWarp>ul>li>h4.chak.zhank');
+      let showButtons = document.querySelectorAll("#dataListWarp>ul>li>h4.chak.zhank");
       for (let i = 0; i < showButtons.length; i++) {
         showButtons[i].click();
       }
     }, 800);
     setTimeout(() => {
-      let explainButtons = document.querySelectorAll('#dataListWarp>div.dajx>div.pull-right.clearfix>a.ckjx');
+      let explainButtons = document.querySelectorAll(
+        "#dataListWarp>div.dajx>div.pull-right.clearfix>a.ckjx"
+      );
       for (let i = 0; i < explainButtons.length; i++) {
         explainButtons[i].click();
       }
     }, 1500);
-    setTimeout(() => { autoFillAnswer(); }, 2000);
-  };
+    setTimeout(() => {
+      autoFillAnswer();
+    }, 2000);
+  }
 
   // 自动填充答案
   function autoFillAnswer() {
@@ -577,7 +611,9 @@ div.tknew.doPane.question {
       if (ans != your) {
         let ansId = ANSWER_LIST.indexOf(ans);
         let yourId = ANSWER_LIST.indexOf(your);
-        let ansList = answers[i].parentElement.parentElement.querySelectorAll('.answerContentList.mgt10');
+        let ansList = answers[i].parentElement.parentElement.querySelectorAll(
+          ".answerContentList.mgt10"
+        );
         ansList[ansId].style.fontWeight = "bold";
         ansList[ansId].style.color = "#51cb65";
         ansList[ansId].children[1].style.fontWeight = "bold";
@@ -598,39 +634,46 @@ div.tknew.doPane.question {
       function () {
         let remainingSeconds = getRemainingSeconds();
         let remainingTime = remainingSeconds > 0 ? formatSeconds(remainingSeconds) : "";
-        let realRemainingSeconds = (new Number(remainingSeconds) / new Number(getCurrentRate())).toFixed(0);
+        let realRemainingSeconds = (
+          new Number(remainingSeconds) / new Number(getCurrentRate())
+        ).toFixed(0);
         let realRemainingTime = formatSeconds(realRemainingSeconds);
         let overTime = getOverTime(realRemainingSeconds);
 
-        let currentEle = document.querySelector('.pv-time-current');
+        let currentEle = document.querySelector(".pv-time-current");
         if (currentEle) {
           let parent = currentEle.parentElement;
 
-          let remainingTimeSpan = document.querySelector('.pv-time-remaining.time-span');
+          let remainingTimeSpan = document.querySelector(".pv-time-remaining.time-span");
           if (!remainingTimeSpan) {
             remainingTimeSpan = document.createElement("span");
             remainingTimeSpan.setAttribute("class", "pv-time-remaining time-span");
             parent.append(remainingTimeSpan);
           }
-          remainingTimeSpan.textContent = '剩余时间：' + remainingTime;
+          remainingTimeSpan.textContent = "剩余时间：" + remainingTime;
 
-          let realRemainingTimeSpan = document.querySelector('.pv-time-remaining-real.time-span');
+          let realRemainingTimeSpan = document.querySelector(".pv-time-remaining-real.time-span");
           if (!realRemainingTimeSpan) {
             realRemainingTimeSpan = document.createElement("span");
             realRemainingTimeSpan.setAttribute("class", "pv-time-remaining-real time-span");
             parent.append(realRemainingTimeSpan);
           }
-          realRemainingTimeSpan.textContent = '真实剩余时间：' + realRemainingTime;
+          realRemainingTimeSpan.textContent = "真实剩余时间：" + realRemainingTime;
 
-          let overTimeSpan = document.querySelector('.pv-time-over.time-span');
+          let overTimeSpan = document.querySelector(".pv-time-over.time-span");
           if (!overTimeSpan) {
             overTimeSpan = document.createElement("span");
             overTimeSpan.setAttribute("class", "pv-time-over time-span");
             parent.append(overTimeSpan);
           }
-          overTimeSpan.textContent = '结束时间：' + overTime;
+          overTimeSpan.textContent = "结束时间：" + overTime;
         }
-        document.querySelector('.pv-video-wrap').nextElementSibling.setAttribute("class", "pv-skin-blue pv-video-bottom pv-subtitle-hide pv-show-fullscreen-page pv-base-control pv-first-h pv-first-hh");
+        document
+          .querySelector(".pv-video-wrap")
+          .nextElementSibling.setAttribute(
+            "class",
+            "pv-skin-blue pv-video-bottom pv-subtitle-hide pv-show-fullscreen-page pv-base-control pv-first-h pv-first-hh"
+          );
       },
       false
     );
@@ -639,7 +682,7 @@ div.tknew.doPane.question {
   // 获取当前时间
   function getNowSeconds() {
     let nowSeconds = 0;
-    let currentEle = document.querySelector('.pv-time-current');
+    let currentEle = document.querySelector(".pv-time-current");
     if (!currentEle) {
       return nowSeconds;
     }
@@ -684,7 +727,7 @@ div.tknew.doPane.question {
   // 获取结束时间
   function getOverTime(seconds) {
     let timestamp = new Date().getTime() + seconds * 1000;
-    return dateFormat('HH:MM:SS', new Date(timestamp));
+    return dateFormat("HH:MM:SS", new Date(timestamp));
   }
 
   // 将秒格式化为时间格式
@@ -714,19 +757,19 @@ div.tknew.doPane.question {
   function dateFormat(fmt, date) {
     let ret;
     let opt = {
-      'Y+': date.getFullYear().toString(),
-      'm+': (date.getMonth() + 1).toString(),
-      'd+': date.getDate().toString(),
-      'H+': date.getHours().toString(),
-      'M+': date.getMinutes().toString(),
-      'S+': date.getSeconds().toString()
+      "Y+": date.getFullYear().toString(),
+      "m+": (date.getMonth() + 1).toString(),
+      "d+": date.getDate().toString(),
+      "H+": date.getHours().toString(),
+      "M+": date.getMinutes().toString(),
+      "S+": date.getSeconds().toString(),
     };
     for (let k in opt) {
-      ret = new RegExp('(' + k + ')').exec(fmt);
+      ret = new RegExp("(" + k + ")").exec(fmt);
       if (ret) {
         fmt = fmt.replace(
           ret[1],
-          ret[1].length == 1 ? opt[k] : opt[k].padStart(ret[1].length, '0')
+          ret[1].length == 1 ? opt[k] : opt[k].padStart(ret[1].length, "0")
         );
       }
     }
@@ -740,10 +783,10 @@ div.tknew.doPane.question {
    */
   function logInfo(title, version) {
     console.clear();
-    const titleStyle = 'color:white;background-color:#606060';
-    const versionStyle = 'color:white;background-color:#1475b2';
-    const logTitle = ' ' + title + ' ';
-    const logVersion = ' ' + version + ' ';
-    console.log('%c' + logTitle + '%c' + logVersion, titleStyle, versionStyle);
+    const titleStyle = "color:white;background-color:#606060";
+    const versionStyle = "color:white;background-color:#1475b2";
+    const logTitle = " " + title + " ";
+    const logVersion = " " + version + " ";
+    console.log("%c" + logTitle + "%c" + logVersion, titleStyle, versionStyle);
   }
 })();

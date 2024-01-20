@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.1
+// @version            1.4.2
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -103,6 +103,37 @@
 /* 进度条上的时间 */
 .time-span {
   margin: 0 10px;
+}
+
+/* 视频播放窗口上的遮罩元素 */
+#videoCoverTop {
+	width: 100%;
+	height: 17.4%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1;
+	background-color: black;
+}
+
+#videoCoverBottom {
+	position: absolute;
+	width: 100%;
+	height: 14%;
+	background-color: black;
+	z-index: 2;
+	left: 0;
+	bottom: 0;
+}
+
+#videoCoverLeft {
+	position: absolute;
+	width: 25.4%;
+	height: 43%;
+	background-color: white;
+	z-index: 3;
+	left: 0;
+	bottom: 14%;
 }
 `;
 
@@ -351,6 +382,7 @@ div.analysisAnswer>div {
       // 直播回放调节播放速度
       setTimeout(() => {
         updateSpeed();
+        addCover();
       }, 1500);
     } else if (url.startsWith("https://wangxiao.xisaiwang.com/tiku2/ctjx")) {
       // 独立的错题解析页面，添加键盘事件
@@ -400,6 +432,21 @@ div.analysisAnswer>div {
     addRateListener();
     updateSideHeight();
     addPersonalCenter();
+  }
+
+  /**
+   * 添加视频播放窗口上的遮罩元素
+   */
+  function addCover() {
+    let parentEle = document.querySelector(".pv-video-wrap");
+    let videoCoverTop = document.getElementById("videoCoverTop");
+    let videoCoverBottom = document.getElementById("videoCoverBottom");
+    let videoCoverLeft = document.getElementById("videoCoverLeft");
+    if (parentEle && !videoCoverTop && !videoCoverBottom && !videoCoverLeft) {
+      parentEle.appendChild($(`<div id="videoCoverTop"></div>`)[0]);
+      parentEle.appendChild($(`<div id="videoCoverBottom"></div>`)[0]);
+      parentEle.appendChild($(`<div id="videoCoverLeft"></div>`)[0]);
+    }
   }
 
   /**

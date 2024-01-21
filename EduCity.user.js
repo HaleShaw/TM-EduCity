@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.2
+// @version            1.4.3
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -134,6 +134,16 @@
 	z-index: 3;
 	left: 0;
 	bottom: 14%;
+}
+
+/* 视频播放窗口进度条上的时间 */
+.pv-time-remaining-real.time-span,
+.pv-time-over.time-span {
+  color: yellow;
+}
+
+.pv-time-now.time-span {
+  color: #41FFF7;
 }
 `;
 
@@ -381,8 +391,8 @@ div.analysisAnswer>div {
     ) {
       // 直播回放调节播放速度
       setTimeout(() => {
-        updateSpeed();
         addCover();
+        updateSpeed();
       }, 1500);
     } else if (url.startsWith("https://wangxiao.xisaiwang.com/tiku2/ctjx")) {
       // 独立的错题解析页面，添加键盘事件
@@ -714,6 +724,14 @@ div.analysisAnswer>div {
             parent.append(overTimeSpan);
           }
           overTimeSpan.textContent = "结束时间：" + overTime;
+
+          let nowTimeSpan = document.querySelector(".pv-time-now.time-span");
+          if (!nowTimeSpan) {
+            nowTimeSpan = document.createElement("span");
+            nowTimeSpan.setAttribute("class", "pv-time-now time-span");
+            parent.append(nowTimeSpan);
+          }
+          nowTimeSpan.textContent = "北京时间：" + dateFormat("HH:MM:SS", new Date());
         }
         document
           .querySelector(".pv-video-wrap")

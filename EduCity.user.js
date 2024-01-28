@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.3
+// @version            1.4.4
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -112,6 +112,9 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+  text-align: center;
+  padding-top: 1.5rem;
+  font-size: 1.75rem;
 	z-index: 1;
 	background-color: black;
 }
@@ -124,6 +127,10 @@
 	z-index: 2;
 	left: 0;
 	bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: right;
+  padding-bottom: 63px;
 }
 
 #videoCoverLeft {
@@ -131,7 +138,7 @@
 	width: 25.4%;
 	height: 43%;
 	background-color: white;
-	z-index: 3;
+	z-index: 0;
 	left: 0;
 	bottom: 14%;
 }
@@ -140,10 +147,6 @@
 .pv-time-remaining-real.time-span,
 .pv-time-over.time-span {
   color: yellow;
-}
-
-.pv-time-now.time-span {
-  color: #41FFF7;
 }
 `;
 
@@ -438,6 +441,7 @@ div.analysisAnswer>div {
     GM_addStyle(zhiBoStyle);
 
     addRemainingTime();
+    updateVideoTitle();
     addRateButton();
     addRateListener();
     updateSideHeight();
@@ -452,9 +456,16 @@ div.analysisAnswer>div {
     let videoCoverTop = document.getElementById("videoCoverTop");
     let videoCoverBottom = document.getElementById("videoCoverBottom");
     let videoCoverLeft = document.getElementById("videoCoverLeft");
+    let title = document.querySelector("a.log.pointer.video-player.act").textContent.trim();
     if (parentEle && !videoCoverTop && !videoCoverBottom && !videoCoverLeft) {
-      parentEle.appendChild($(`<div id="videoCoverTop"></div>`)[0]);
-      parentEle.appendChild($(`<div id="videoCoverBottom"></div>`)[0]);
+      parentEle.appendChild(
+        $(
+          `<div id="videoCoverTop">${title} &nbsp;&nbsp;&nbsp;&nbsp;剩余课时：${getRemainingClass()}</div>`
+        )[0]
+      );
+      parentEle.appendChild(
+        $(`<div id="videoCoverBottom"><span class="videoCoverBottom"></span></div>`)[0]
+      );
       parentEle.appendChild($(`<div id="videoCoverLeft"></div>`)[0]);
     }
   }
@@ -684,6 +695,43 @@ div.analysisAnswer>div {
   }
 
   // ---------------------------------------------------
+  // 更新播放页面标题
+  function updateVideoTitle() {
+    const config = { attributes: true };
+    const callback = function (mutationsList, observer) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          let title = document.querySelector("a.log.pointer.video-player.act").textContent.trim();
+          document.getElementById(
+            "videoCoverTop"
+          ).innerHTML = `${title} &nbsp;&nbsp;&nbsp;&nbsp;剩余课时：${getRemainingClass()}`;
+        }
+      }
+    };
+    const observer = new MutationObserver(callback);
+    document.querySelectorAll("a.log.pointer.video-player").forEach(element => {
+      observer.observe(element, config);
+    });
+  }
+
+  // 获取剩余课时数量
+  function getRemainingClass() {
+    let classList = document.querySelectorAll("a.log.pointer.video-player");
+    let activeClass = document.querySelector("a.log.pointer.video-player.act").textContent.trim();
+    let index = 0;
+    let flag = false;
+    for (let i = 0; i < classList.length; i++) {
+      const className = classList[i].textContent.trim();
+      if (flag) {
+        index++;
+      }
+      if (activeClass == className) {
+        flag = true;
+      }
+    }
+    return index;
+  }
+
   // 添加剩余时间
   function addRemainingTime() {
     document.querySelector(".pv-time-current").addEventListener(
@@ -729,7 +777,7 @@ div.analysisAnswer>div {
           if (!nowTimeSpan) {
             nowTimeSpan = document.createElement("span");
             nowTimeSpan.setAttribute("class", "pv-time-now time-span");
-            parent.append(nowTimeSpan);
+            document.getElementById("videoCoverBottom").append(nowTimeSpan);
           }
           nowTimeSpan.textContent = "北京时间：" + dateFormat("HH:MM:SS", new Date());
         }

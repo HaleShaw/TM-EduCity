@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.4
+// @version            1.4.5
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -199,6 +199,11 @@ div.col-md-12>div>div.zt_top_right,
   display: none !important;
 }
 
+/* 右侧题目编号列表 */
+.dtklist.item {
+  height: 500px;
+}
+
 /* 选项前的CheckBox */
 div.answerContentList>span.cbox {
   display: inline-block !important;
@@ -218,6 +223,10 @@ div.answerContentList>span.cbox {
 /* 进度条 */
 .jindu_div {
   margin: 5px 0 !important;
+}
+
+.jindu_div .jindu_line {
+  width: calc(100% - 160px);
 }
 
 .bp20 {
@@ -247,6 +256,12 @@ div.answerList.mgb20 {
 
 .lh2 {
   margin-bottom: 5px !important;
+}
+
+.examTigan {
+    max-height: 600px;
+    overflow-y: auto;
+    display: block;
 }
 
 .examTigan > p {
@@ -572,30 +587,45 @@ div.analysisAnswer>div {
       // 	Spacebar. 查看答案解析
       if (code == 32 && document.getElementsByClassName("col-md-4 center bottomCenter bp20")[0]) {
         document.getElementsByClassName("col-md-4 center bottomCenter bp20")[0].click();
+        scrollToBottom();
       }
       // Left Arrow.
       if (code == 37 && document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0]) {
         document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0].click();
+        setTimeout(() => {
+          let tiGan = document.querySelector("div.examTigan");
+          scrollElementToBottom(tiGan);
+        }, 200);
+        scrollToBottom();
       }
       // Right Arrow.
       if (code == 39 && document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0]) {
         document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
+        setTimeout(() => {
+          let tiGan = document.querySelector("div.examTigan");
+          scrollElementToBottom(tiGan);
+        }, 200);
+        scrollToBottom();
       }
       // A,1.
       if (code == 49 || code == 65 || code == 97) {
         document.getElementById("slec0A").click();
+        scrollToBottom();
       }
       // B,2.
       if (code == 50 || code == 66 || code == 98) {
         document.getElementById("slec0B").click();
+        scrollToBottom();
       }
       // C,3.
       if (code == 51 || code == 67 || code == 99) {
         document.getElementById("slec0C").click();
+        scrollToBottom();
       }
       // D,4.
       if (code == 52 || code == 68 || code == 100) {
         document.getElementById("slec0D").click();
+        scrollToBottom();
       }
       // J. 标记
       if (code == 74 && document.getElementsByClassName("bj_icon addBiaoji")[0]) {
@@ -841,6 +871,17 @@ div.analysisAnswer>div {
   function getOverTime(seconds) {
     let timestamp = new Date().getTime() + seconds * 1000;
     return dateFormat("HH:MM:SS", new Date(timestamp));
+  }
+
+  // 窗口滚动到底部
+  function scrollToBottom() {
+    setTimeout("window.scrollTo(0, document.body.scrollHeight)", 200);
+    setTimeout("window.scrollTo(0, document.body.scrollHeight)", 600);
+  }
+
+  // 元素滚动到底部
+  function scrollElementToBottom(element) {
+    element.scrollTop = element.scrollHeight - element.clientHeight;
   }
 
   // 将秒格式化为时间格式

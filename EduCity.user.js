@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.5
+// @version            1.4.6
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -586,11 +586,26 @@ div.analysisAnswer>div {
       var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
       // 	Spacebar. 查看答案解析
       if (code == 32 && document.getElementsByClassName("col-md-4 center bottomCenter bp20")[0]) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementsByClassName("col-md-4 center bottomCenter bp20")[0].click();
+        onQestion();
+        scrollToBottom();
+      }
+      // 	Q. 查看提问
+      if (code == 81 && document.getElementsByClassName("tknew doPane question")[0]) {
+        if (validatePause()) {
+          return;
+        }
+        onQestion();
         scrollToBottom();
       }
       // Left Arrow.
       if (code == 37 && document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0]) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0].click();
         setTimeout(() => {
           let tiGan = document.querySelector("div.examTigan");
@@ -600,6 +615,9 @@ div.analysisAnswer>div {
       }
       // Right Arrow.
       if (code == 39 && document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0]) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
         setTimeout(() => {
           let tiGan = document.querySelector("div.examTigan");
@@ -609,26 +627,41 @@ div.analysisAnswer>div {
       }
       // A,1.
       if (code == 49 || code == 65 || code == 97) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementById("slec0A").click();
         scrollToBottom();
       }
       // B,2.
       if (code == 50 || code == 66 || code == 98) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementById("slec0B").click();
         scrollToBottom();
       }
       // C,3.
       if (code == 51 || code == 67 || code == 99) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementById("slec0C").click();
         scrollToBottom();
       }
       // D,4.
       if (code == 52 || code == 68 || code == 100) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementById("slec0D").click();
         scrollToBottom();
       }
       // J. 标记
       if (code == 74 && document.getElementsByClassName("bj_icon addBiaoji")[0]) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementsByClassName("bj_icon addBiaoji")[0].click();
         setTimeout(function () {
           if (document.getElementsByClassName("swal-button swal-button--confirm")[0]) {
@@ -639,6 +672,9 @@ div.analysisAnswer>div {
       }
       // J. 取消标记
       if (code == 74 && document.getElementsByClassName("bj_icon cancelBiaoji")[0]) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementsByClassName("bj_icon cancelBiaoji")[0].click();
         setTimeout(function () {
           if (document.getElementsByClassName("swal-button swal-button--confirm")[0]) {
@@ -669,10 +705,16 @@ div.analysisAnswer>div {
       var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
       // Left Arrow.
       if (code == 37 && document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0]) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0].click();
       }
       // Right Arrow.
       if (code == 39 && document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0]) {
+        if (validatePause()) {
+          return;
+        }
         document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
       }
     };
@@ -722,6 +764,18 @@ div.analysisAnswer>div {
         }
       }
     }
+  }
+
+  /**
+   * 验证是否暂停中
+   * @returns Boolean
+   */
+  function validatePause() {
+    return (
+      document.getElementsByClassName("swal-button swal-button--confirm")[0] &&
+      document.getElementsByClassName("swal-button swal-button--confirm")[0].textContent ==
+        "继续做题"
+    );
   }
 
   // ---------------------------------------------------
@@ -875,8 +929,8 @@ div.analysisAnswer>div {
 
   // 窗口滚动到底部
   function scrollToBottom() {
-    setTimeout("window.scrollTo(0, document.body.scrollHeight)", 200);
-    setTimeout("window.scrollTo(0, document.body.scrollHeight)", 600);
+    setTimeout("window.scrollTo(0, document.body.scrollHeight)", 400);
+    setTimeout("window.scrollTo(0, document.body.scrollHeight)", 800);
   }
 
   // 元素滚动到底部

@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.6
+// @version            1.4.7
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -606,7 +606,11 @@ div.analysisAnswer>div {
         if (validatePause()) {
           return;
         }
-        document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0].click();
+        let btn = document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0];
+        if (btn.classList.contains("notclickn")) {
+          return;
+        }
+        btn.click();
         setTimeout(() => {
           let tiGan = document.querySelector("div.examTigan");
           scrollElementToBottom(tiGan);
@@ -618,7 +622,11 @@ div.analysisAnswer>div {
         if (validatePause()) {
           return;
         }
-        document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
+        let btn = document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0];
+        if (btn.classList.contains("notclickn")) {
+          return;
+        }
+        btn.click();
         setTimeout(() => {
           let tiGan = document.querySelector("div.examTigan");
           scrollElementToBottom(tiGan);
@@ -703,19 +711,39 @@ div.analysisAnswer>div {
     document.onkeyup = function (e) {
       var theEvent = e || window.event;
       var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+      // 	Q. 查看提问
+      if (code == 81 && document.getElementsByClassName("tknew doPane question")[0]) {
+        if (validatePause()) {
+          return;
+        }
+        onQestion();
+        scrollToBottom();
+      }
       // Left Arrow.
       if (code == 37 && document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0]) {
         if (validatePause()) {
           return;
         }
-        document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0].click();
+        let btn = document.getElementsByClassName("col-md-4 center bp20 bLeftWrap")[0];
+        if (btn.classList.contains("notclickn")) {
+          return;
+        }
+        btn.click();
+        onQestion();
+        scrollToBottom();
       }
       // Right Arrow.
       if (code == 39 && document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0]) {
         if (validatePause()) {
           return;
         }
-        document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0].click();
+        let btn = document.getElementsByClassName("col-md-4 center bp20 bRightWrap")[0];
+        if (btn.classList.contains("notclickn")) {
+          return;
+        }
+        btn.click();
+        onQestion();
+        scrollToBottom();
       }
     };
   }

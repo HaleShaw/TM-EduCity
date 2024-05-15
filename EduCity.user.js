@@ -4,7 +4,7 @@
 // @description        Optimize the website of educity.cn.
 // @description:zh-CN  希赛页面优化
 // @namespace          https://github.com/HaleShaw
-// @version            1.4.7
+// @version            1.4.8
 // @author             HaleShaw
 // @copyright          2021+, HaleShaw (https://github.com/HaleShaw)
 // @license            AGPL-3.0-or-later
@@ -226,7 +226,7 @@ div.answerContentList>span.cbox {
 }
 
 .jindu_div .jindu_line {
-  width: calc(100% - 160px);
+  width: calc(100% - 200px);
 }
 
 .bp20 {
@@ -264,13 +264,14 @@ div.answerList.mgb20 {
     display: block;
 }
 
-.examTigan > p {
-  font-size: 2.3rem;
+.examTigan,
+.examTigan > p,
+.answerContentList > label {
+  font-size: 2.2rem !important;
 }
 
 /* 选项列表 */
 .answerContentList > label {
-  font-size: 2.2rem;
   color: #666;
 }
 
@@ -590,7 +591,13 @@ div.analysisAnswer>div {
           return;
         }
         document.getElementsByClassName("col-md-4 center bottomCenter bp20")[0].click();
-        onQestion();
+        if (document.getElementsByClassName("tknew doPane question")[0]) {
+          try {
+            onQestion();
+          } catch (error) {
+            console.error(error, "展开提问失败！");
+          }
+        }
         scrollToBottom();
       }
       // 	Q. 查看提问
@@ -598,7 +605,11 @@ div.analysisAnswer>div {
         if (validatePause()) {
           return;
         }
-        onQestion();
+        try {
+          onQestion();
+        } catch (error) {
+          console.error(error, "展开提问失败！");
+        }
         scrollToBottom();
       }
       // Left Arrow.
@@ -716,7 +727,11 @@ div.analysisAnswer>div {
         if (validatePause()) {
           return;
         }
-        onQestion();
+        try {
+          onQestion();
+        } catch (error) {
+          console.error(error, "展开提问失败！");
+        }
         scrollToBottom();
       }
       // Left Arrow.
@@ -729,7 +744,13 @@ div.analysisAnswer>div {
           return;
         }
         btn.click();
-        onQestion();
+        if (document.getElementsByClassName("tknew doPane question")[0]) {
+          try {
+            onQestion();
+          } catch (error) {
+            console.error(error, "展开提问失败！");
+          }
+        }
         scrollToBottom();
       }
       // Right Arrow.
@@ -742,7 +763,13 @@ div.analysisAnswer>div {
           return;
         }
         btn.click();
-        onQestion();
+        if (document.getElementsByClassName("tknew doPane question")[0]) {
+          try {
+            onQestion();
+          } catch (error) {
+            console.error(error, "展开提问失败！");
+          }
+        }
         scrollToBottom();
       }
     };
@@ -813,10 +840,15 @@ div.analysisAnswer>div {
     const callback = function (mutationsList, observer) {
       for (let mutation of mutationsList) {
         if (mutation.type === "attributes" && mutation.attributeName === "class") {
-          let title = document.querySelector("a.log.pointer.video-player.act").textContent.trim();
-          document.getElementById(
-            "videoCoverTop"
-          ).innerHTML = `${title} &nbsp;&nbsp;&nbsp;&nbsp;剩余课时：${getRemainingClass()}`;
+          let title = "";
+          let titleEle = document.querySelector("a.log.pointer.video-player.act");
+          if (titleEle) {
+            title = titleEle.textContent.trim();
+          }
+          let cover = document.getElementById("videoCoverTop");
+          if (cover) {
+            cover.innerHTML = `${title} &nbsp;&nbsp;&nbsp;&nbsp;剩余课时：${getRemainingClass()}`;
+          }
         }
       }
     };
